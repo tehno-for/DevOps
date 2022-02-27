@@ -1,0 +1,10 @@
+version: '3.7'
+services: 
+  website:
+    build: 
+      context: .
+      # name: website
+    ports:
+    - 8000:8000 
+  # database:
+  # aplication_server:
