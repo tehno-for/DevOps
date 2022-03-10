@@ -1,3 +1,0 @@
-workflow-aggregator
-seed
-git
