@@ -24,16 +24,34 @@ data "aws_iam_policy_document" "bucket_policy" {
 
 resource "aws_s3_bucket" "website" {
   bucket = var.domain_name          // The name of the bucket.
-  acl    = "public-read"            /* Access control list for the bucket.
+  /* acl    = "public-read"             Access control list for the bucket.
                                        Websites need to be publicly-available
                                        to the Internet for website hosting to
-                                       work. */
-  policy = "${data.aws_iam_policy_document.bucket_policy.json}"
-  website {
-    index_document = "index.htm"   // The root of the website.
-    error_document = "error.htm"   // The page to show when people hit invalid pages.
+                                       work. */  
+}
+
+resource "aws_s3_bucket_website_configuration" "website" {
+  bucket = aws_s3_bucket.website.id
+
+  index_document {
+    suffix = "index.html" // The root of the website.
+  }
+
+  error_document {
+    key = "error.html" // The page to show when people hit invalid pages.
   }
 }
+
+resource "aws_s3_bucket_acl" "website" {
+  bucket = aws_s3_bucket.website.id
+  acl    = "public-read"
+}
+
+resource "aws_s3_bucket_policy" "website" {
+  bucket = aws_s3_bucket.website.id
+  policy = "${data.aws_iam_policy_document.bucket_policy.json}"
+}
+
 
 output "website_bucket_url" {
   value = "${aws_s3_bucket.website.website_endpoint}"
