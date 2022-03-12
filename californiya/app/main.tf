@@ -2,7 +2,6 @@ terraform {
     required_providers {
         aws = {
             source = "hashicorp/aws"
-            version = ">= 4.1"
         }
     }
 }
@@ -33,7 +32,7 @@ data "aws_iam_policy_document" "bucket_policy" {
    says can be accessed from the .json property. */
 
 resource "aws_s3_bucket" "website" {
-  bucket = "explorecalifornia.org"          // The name of the bucket.
+  bucket = "rustamshexplorecalifornia.org"          // The name of the bucket.
   /* acl    = "public-read"             Access control list for the bucket.
                                        Websites need to be publicly-available
                                        to the Internet for website hosting to
@@ -54,7 +53,7 @@ resource "aws_s3_bucket_website_configuration" "website" {
 
 resource "aws_s3_bucket_acl" "website" {
   bucket = aws_s3_bucket.website.id
-  acl    = "public-read"
+  acl    = "private"
 }
 
 resource "aws_s3_bucket_policy" "website" {
